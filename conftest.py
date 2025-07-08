@@ -1,13 +1,12 @@
 from email.policy import default
 
 import pytest
-import time
 from selenium import webdriver
 from selenium.webdriver.chromium.options import ChromiumOptions
 from selenium.webdriver.chromium.service import ChromiumService
 from selenium.webdriver.firefox.options import Options as FFOptions
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-#from urllib3 import request
+
 
 
 
@@ -18,6 +17,8 @@ def pytest_addoption(parser):
     parser.addoption(
         "--base_url", help="Base application url", default="192.168.0.231:8181"
     )
+
+
 @pytest.fixture(scope="session")
 def base_url(request):
     return "http://" + request.config.getoption("--base_url")
@@ -33,6 +34,7 @@ def browser(request):
         if headless:
             options.add_argument("headless=new")
         driver = webdriver.Chrome(options=options)
+        driver.maximize_window()
     elif browser_name in ["ff","fox","firefox"]:
         options=FFOptions()
         if headless:
@@ -47,3 +49,12 @@ def browser(request):
             executable_path=fr"{drivers_storage}\yandexdriver.exe"))
     yield driver
     driver.quit()
+
+# @pytest.fixture(scope="session")
+# def start_opencart ():
+#     ssh = paramiko.SSHClient()
+#     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+#     ssh.connect('192.168.0.231', 22, username='user', password='123456')
+#     ssh.exec_command("cd /home/user/Documents/OPENCART")
+#     ssh.exec_command("docker compose up -d")
+#     return 0

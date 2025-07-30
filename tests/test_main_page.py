@@ -15,8 +15,9 @@ def test_no_money_to_start(browser, base_url):
 
 @pytest.mark.reserv
 def test_head(browser, base_url):
+    currency_symbol = "$"
     main_page = MainPage(browser, base_url)
-    assert "$" in main_page.currensy_choice().text, "Неверная валюта по умолчанию"
+    assert currency_symbol in main_page.currensy_choice(currency_symbol).text, "Неверная валюта по умолчанию"
 
 @pytest.mark.reserv
 @pytest.mark.parametrize("currency_symbol",

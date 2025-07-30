@@ -1,15 +1,11 @@
 import pytest
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
+from page_objects import CatalogPage
 
+@pytest.mark.reserv
 def test_search_form(browser, base_url):
-    browser.get(base_url + "/en-gb/catalog/desktops")
-    wait = WebDriverWait(browser, 5)
-    assert wait.until(EC.title_is("Desktops")), "страница не загрузилась"
-    assert browser.find_element(By.CSS_SELECTOR, "[href$='tablet']"), "Отсутствует товар категории tablet"
-    assert browser.find_element(By.ID, "carousel-banner-0"), "нет баннера брендов"
-    assert browser.find_element(By.ID, "display-control"), "нет панели настройки отображения"
-    assert browser.find_element(By.ID, "product-list"), "нет списка товаров"
-    assert browser.find_element(By.CLASS_NAME, "pagination"), "нет кнопок пагинации"
+    catalog_page = CatalogPage(browser, base_url)
+    assert catalog_page.find_product_category('tablet'), "Отсутствует товар категории tablet"
+    assert catalog_page.carusel(), "нет баннера брендов"
+    assert catalog_page.display_settings(), "нет панели настройки отображения"
+    assert catalog_page.product_list(), "нет списка товаров"
+    assert catalog_page.pagination_buttons(), "нет кнопок пагинации"

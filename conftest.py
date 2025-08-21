@@ -1,3 +1,5 @@
+from email.policy import default
+
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chromium.options import ChromiumOptions
@@ -12,9 +14,11 @@ def pytest_addoption(parser):
     parser.addoption("--browser", help="Browser to run tests", default="chrome")
     parser.addoption("--drivers", help="Driver storage", default=r"C:\Users\Mariya\Downloads\drivers")
     parser.addoption("--headless", action="store_true", help="Browser run headless")
+    parser.addoption("--remote", help="selenoid", default="True")
     parser.addoption(
         "--base_url", help="Base application url", default="192.168.0.164:8181"
     )
+
 
 @pytest.fixture(scope="session")
 def base_url(request):
@@ -26,6 +30,7 @@ def browser(request):
     browser_name = request.config.getoption("--browser")
     drivers_storage = request.config.getoption("--drivers")
     headless = request.config.getoption("--headless")
+    remote = request.config.getoption("--remote")
     log_level = request.config.getoption("--log_level", default='INFO')
 
     logger = logging.getLogger(request.node.name)
@@ -39,13 +44,44 @@ def browser(request):
         options = ChromeOptions()
         if headless:
             options.add_argument("headless=new")
-        driver = webdriver.Chrome(options=options)
-        driver.maximize_window()
+        if remote == "False":
+            logger.info('local chrome')
+            driver = webdriver.Chrome(options=options)
+        else:
+            logger.info('selenoid chrome')
+            capabilities = {
+                "browserName": "chrome",
+                "browserVersion": "latest",
+                "selenoid:options": {
+                    "enableVideo": False
+                }
+            }
+            for key, value in capabilities.items():
+                options.set_capability(key, value)
+
+            driver = webdriver.Remote(
+                command_executor="http://192.168.0.164/wd/hub",
+                options=options)
+            driver.maximize_window()
     elif browser_name in ["ff","fox","firefox"]:
         options=FFOptions()
         if headless:
             options.add_argument("headless")
-        driver = webdriver.Firefox(options=options)
+        if remote:
+            driver = webdriver.Firefox(options=options)
+        else:
+            capabilities = {
+                "browserName": "firefox",
+                "browserVersion": "latest",
+                "selenoid:options": {
+                    "enableVideo": False
+                }
+            }
+            for key, value in capabilities.items():
+                options.set_capability(key, value)
+            driver = webdriver.Remote(
+                command_executor="http://192.168.0.164/wd/hub",
+                options=options)
     elif browser_name in ["ya","yandex"]:
         options = ChromiumOptions()
         if headless:

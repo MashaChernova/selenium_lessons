@@ -3,9 +3,6 @@ FROM python:3.11.13-slim
 WORKDIR /root/
 
 
-COPY requirements.txt .
-RUN apt-get update
-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         firefox-esr \
@@ -29,7 +26,7 @@ ENV DISPLAY=:99
 RUN mkdir -p /tmp/firefox-profile && \
     chmod -R 777 /tmp
 
-
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 RUN pip install webdriver-manager

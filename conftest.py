@@ -65,7 +65,7 @@ def browser(request):
         options=FFOptions()
         if headless:
             options.add_argument("headless")
-        if remote:
+        if remote == "False":
             driver = webdriver.Firefox(options=options)
         else:
             capabilities = {

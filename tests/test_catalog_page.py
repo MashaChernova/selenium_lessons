@@ -1,7 +1,7 @@
 import pytest
 from page_objects import CatalogPage
 
-@pytest.mark.reserv
+@pytest.mark.reserv3
 def test_search_form(browser, base_url):
     catalog_page = CatalogPage(browser, base_url)
     assert catalog_page.find_product_category('tablet'), "Отсутствует товар категории tablet"

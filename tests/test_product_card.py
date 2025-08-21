@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from page_objects import ProductCurt
 
-@pytest.mark.reserv
+@pytest.mark.only
 @pytest.mark.parametrize("product",
                          ['macbook',
                           'iphone',

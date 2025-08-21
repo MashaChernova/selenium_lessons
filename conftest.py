@@ -38,8 +38,8 @@ def browser(request):
     file_handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
     logger.addHandler(file_handler)
     logger.setLevel(level=log_level)
-
     logger.info("===> Test started at %s" % datetime.datetime.now())
+
     if browser_name in ["ch", "chrome"]:
         options = ChromeOptions()
         if headless:

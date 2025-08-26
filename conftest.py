@@ -1,13 +1,11 @@
-from email.policy import default
-
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chromium.options import ChromiumOptions
 from selenium.webdriver.chromium.service import ChromiumService
 from selenium.webdriver.firefox.options import Options as FFOptions
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-
-
+import logging
+import datetime
 
 
 def pytest_addoption(parser):
@@ -15,9 +13,8 @@ def pytest_addoption(parser):
     parser.addoption("--drivers", help="Driver storage", default=r"C:\Users\Mariya\Downloads\drivers")
     parser.addoption("--headless", action="store_true", help="Browser run headless")
     parser.addoption(
-        "--base_url", help="Base application url", default="192.168.0.231:8181"
+        "--base_url", help="Base application url", default="192.168.0.164:8181"
     )
-
 
 @pytest.fixture(scope="session")
 def base_url(request):
@@ -29,6 +26,15 @@ def browser(request):
     browser_name = request.config.getoption("--browser")
     drivers_storage = request.config.getoption("--drivers")
     headless = request.config.getoption("--headless")
+    log_level = request.config.getoption("--log_level", default='INFO')
+
+    logger = logging.getLogger(request.node.name)
+    file_handler = logging.FileHandler(f"logs/{request.node.name}.log")
+    file_handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
+    logger.addHandler(file_handler)
+    logger.setLevel(level=log_level)
+
+    logger.info("===> Test started at %s" % datetime.datetime.now())
     if browser_name in ["ch", "chrome"]:
         options = ChromeOptions()
         if headless:
@@ -47,14 +53,12 @@ def browser(request):
         options.binary_location = r"c:\Users\Mariya\AppData\Local\Yandex\YandexBrowser\Application\browser.exe"
         driver = webdriver.Chrome(options=options, service=ChromiumService(
             executable_path=fr"{drivers_storage}\yandexdriver.exe"))
-    yield driver
-    driver.quit()
 
-# @pytest.fixture(scope="session")
-# def start_opencart ():
-#     ssh = paramiko.SSHClient()
-#     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-#     ssh.connect('192.168.0.231', 22, username='user', password='123456')
-#     ssh.exec_command("cd /home/user/Documents/OPENCART")
-#     ssh.exec_command("docker compose up -d")
-#     return 0
+    driver.log_level = log_level
+    driver.logger = logger
+    driver.test_name = request.node.name
+
+    logger.info("Browser %s started" % browser)
+    yield driver
+    logger.info("===> Test finished at %s" % datetime.datetime.now())
+    driver.quit()

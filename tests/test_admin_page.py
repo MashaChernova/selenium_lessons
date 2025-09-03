@@ -2,7 +2,7 @@ import pytest
 from page_objects import AdminPage
 
 
-@pytest.mark.only1
+@pytest.mark.only12
 def test_search_form(browser, base_url):
     admin_page = AdminPage(browser, base_url)
     assert admin_page.find_logo(), "Отсутствует логотип"

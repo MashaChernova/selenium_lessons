@@ -37,15 +37,18 @@ services:
        interval: 10s
        timeout: 5s
        retries: 3
-  tests:
-    image:  tests3
-    container_name: tests
-    hostname: tests
-    command: pytest --browser ${BROWSER} --concurrency 2
-    depends_on:
-       - opencart
-    tty: true  # Keep container running
-    stdin_open: true  # Keep STDIN open
-    volumes:
-      - ./test_results:/app/test_results
+#  tests:
+#    image:  tests3
+#    build:
+#      context: ..        # директория с Dockerfile
+#      dockerfile: Dockerfile  # если имя другое, укажи здесь
+#    container_name: tests
+#    hostname: tests
+#    command: pytest --browser ${BROWSER} --concurrency 2
+#    depends_on:
+#       - opencart
+#    tty: true  # Keep container running
+#    stdin_open: true  # Keep STDIN open
+#    volumes:
+ #     - ./test_results:/app/test_results
 

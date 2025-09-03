@@ -10,7 +10,7 @@ import time
 from tests.page_objects import MainPage, AdminPage, CartPage, CatalogPage, AddProductPage
 
 
-@pytest.mark.only
+@pytest.mark.only1
 def test_login_admin(browser, base_url):
     admin_page = AdminPage(browser,base_url)
     admin_page.admin_login()
@@ -19,7 +19,7 @@ def test_login_admin(browser, base_url):
     assert admin_page.find_login_button(), "Отсутствует кнопка входа. Вероятно, выход не выполнен"
 
 
-@pytest.mark.only
+@pytest.mark.only1
 def test_add_product_in_cart(browser, base_url):
     main_page = MainPage(browser, base_url)
     assert  "0 item" in main_page.header_cart_button().text, "корзина изначально не пуста"

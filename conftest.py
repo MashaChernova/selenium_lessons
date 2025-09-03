@@ -15,7 +15,7 @@ def pytest_addoption(parser):
     parser.addoption("--drivers", help="Driver storage", default=r"C:\Users\Mariya\Downloads\drivers")
     parser.addoption("--headless", action="store_true", help="Browser run headless")
     parser.addoption("--remote", help="selenoid", default="True")
-    parser.addoption("--base_url", help="Base application url", default="192.168.0.164:8181")
+    parser.addoption("--base_url", help="Base application url", default="192.168.0.106:8181")
 
 
 @pytest.fixture(scope="session")
@@ -58,7 +58,7 @@ def browser(request):
                 options.set_capability(key, value)
 
             driver = webdriver.Remote(
-                command_executor="http://192.168.0.164/wd/hub",
+                command_executor="http://192.168.0.106/wd/hub",
                 options=options)
             driver.maximize_window()
     elif browser_name in ["ff","fox","firefox"]:
@@ -78,7 +78,7 @@ def browser(request):
             for key, value in capabilities.items():
                 options.set_capability(key, value)
             driver = webdriver.Remote(
-                command_executor="http://192.168.0.164/wd/hub",
+                command_executor="http://192.168.0.106/wd/hub",
                 options=options)
     elif browser_name in ["ya","yandex"]:
         options = ChromiumOptions()

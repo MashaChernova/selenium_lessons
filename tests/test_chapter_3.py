@@ -10,7 +10,7 @@ import time
 from tests.page_objects import MainPage, AdminPage, CartPage, CatalogPage, AddProductPage
 
 
-@pytest.mark.only1
+@pytest.mark.only
 def test_login_admin(browser, base_url):
     admin_page = AdminPage(browser,base_url)
     admin_page.admin_login()
@@ -23,10 +23,10 @@ def test_login_admin(browser, base_url):
 def test_add_product_in_cart(browser, base_url):
     main_page = MainPage(browser, base_url)
     assert  "0 item" in main_page.header_cart_button().text, "корзина изначально не пуста"
-    # main_page.add_product()
-    # product_description = main_page.get_product_description()
-    # cart_page = CartPage(browser, base_url)
-    assert  True #cart_page.get_product_description() in product_description,  "Товар не добавился или добавился более одного раза"
+    main_page.add_product()
+    product_description = main_page.get_product_description()
+    cart_page = CartPage(browser, base_url)
+    assert  cart_page.get_product_description() in product_description,  "Товар не добавился или добавился более одного раза"
 
 @pytest.mark.only
 def test_change_currency_in_main_page(browser,base_url):
@@ -43,7 +43,7 @@ def test_change_currency_in_catalog(browser,base_url):
     catalog_page = CatalogPage(browser,base_url)
     assert cyrrent_symbol in catalog_page.get_description_text()
 
-@pytest.mark.only3
+@pytest.mark.only
 def test_add_new_product(browser, base_url):
     admin_page = AdminPage(browser, base_url)
     account_page = admin_page.admin_login()

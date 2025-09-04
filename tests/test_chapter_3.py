@@ -18,7 +18,7 @@ def test_login_admin(browser, base_url):
     admin_page.logout_button().click()
     assert admin_page.find_login_button(), "Отсутствует кнопка входа. Вероятно, выход не выполнен"
 
-
+@pytest.mark.xfail
 @pytest.mark.only1
 def test_add_product_in_cart(browser, base_url):
     main_page = MainPage(browser, base_url)

@@ -10,7 +10,7 @@ import time
 from tests.page_objects import MainPage, AdminPage, CartPage, CatalogPage, AddProductPage
 
 
-@pytest.mark.only
+@pytest.mark.only1
 def test_login_admin(browser, base_url):
     admin_page = AdminPage(browser,base_url)
     admin_page.admin_login()

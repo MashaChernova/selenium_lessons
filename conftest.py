@@ -49,7 +49,7 @@ def browser(request):
             logger.info('selenoid chrome')
             if browser_version == "127.0":
                 browser_name = 'chrome127'
-            else
+            else:
                 browser_name = "chrome"
             capabilities = {
                 "browserName": browser_name,

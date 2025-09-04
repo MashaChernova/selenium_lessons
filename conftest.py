@@ -47,7 +47,7 @@ def browser(request):
             driver = webdriver.Chrome(options=options)
         else:
             logger.info('selenoid chrome')
-            if browser_version = "127.0":
+            if browser_version == "127.0":
                 browser_name = 'chrome127'
             else
                 browser_name = "chrome"

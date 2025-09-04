@@ -35,7 +35,7 @@ def test_change_currency_in_main_page(browser,base_url):
     main_page.currensy_choice(cyrrent_symbol)
     assert cyrrent_symbol in main_page.header_cart_button().text
 
-@pytest.mark.only
+@pytest.mark.only1
 def test_change_currency_in_catalog(browser,base_url):
     cyrrent_symbol = "£"
     main_page = MainPage(browser, base_url)

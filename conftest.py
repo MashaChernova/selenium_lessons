@@ -1,5 +1,5 @@
 from email.policy import default
-
+import selenium
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chromium.options import ChromiumOptions
